@@ -35,28 +35,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const path = require("path")
+const path = require("path");
 
-const productsRoute = require("./routes/products")
+const authRoute = require("./routes/auth");
+const productsRoute = require("./routes/products");
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-
 app.use((req, res, next) => {
-    console.log(req.url);
-    next();
-  });
+  console.log(req.url);
+  next();
+});
 
-  app.use("/product", productsRoute);
+app.use("/auth", authRoute);
+app.use("/product", productsRoute);
 
-  app.use("/", (req,res) =>{
-      res.render("home", {user: 'Osama'})
-      
-  })
-
+app.use("/", (req, res) => {
+  res.render("home", { user: "Osama" });
+});
 
 app.listen(3000);
